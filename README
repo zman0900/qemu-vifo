@@ -1,0 +1,5 @@
+This repository contains my personal configruation to run windows inside of qemu
+using VFIO for pci-e passthrough, enabling the VM to have direct access to a 
+physical GPU and USB card.  Much of this is based on info from a thread on the
+Arch Linux forums: https://bbs.archlinux.org/viewtopic.php?id=162768&p=1 along
+with some additional info found on the Arch Linux wiki pages.
