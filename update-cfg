@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $(id -u) != "0" ]
+then
+  echo "This script requires root"
+  sudo "$0" "$@"
+  exit $?
+fi
+
+currentDir=$(pwd)
+cd $(dirname ${0})
+
+cp -rv fs_root/* /
+
+cd ${currentDir}
