@@ -1,0 +1,14 @@
+[Unit]
+Description=QEMU virtual machine
+After=vfio-bind.service network.target
+ConditionVirtualization=!vm
+
+[Service]
+Environment="type=system-x86_64" "haltcmd=kill -INT $MAINPID"
+EnvironmentFile=/etc/conf.d/qemu.d/%i
+ExecStart=/usr/bin/env qemu-${type} -name %i -nographic $args
+ExecStop=/bin/sh -c "${haltcmd} && while kill -0 $MAINPID; do sleep 0.5; done"
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,60 @@
+#                  hd7850 = 1002:6798 - 02:00.0
+#            hd7850-audio = 1002:aaa0 - 02:00.1
+#  pcie network (removed) = 10ec:8168 - 03:00.0
+#     pci audio (removed) = 13f6:8788 - 0c:00.0
+# onboard usb2 (not used) = 8086:1e26 - 00:1d.0
+# onboard usb3 (not used) = 1b6f:7023 - 06:00.0
+#               pcie usb3 = 1033:0194 - 0a:00.0
+
+
+MACHINE="-enable-kvm -M q35 -bios /usr/share/qemu/bios.bin -rtc base=localtime"
+CPU="-cpu host -smp 8,sockets=1,cores=4,threads=2"
+MEM="-m 6144"
+GRAPHICS="-vga none"
+
+BASIC_CFG="$MACHINE $CPU $MEM $GRAPHICS"
+
+
+SPICE="-spice port=5930,addr=127.0.0.1,disable-ticketing \
+-device virtio-serial-pci \
+-device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
+-chardev spicevmc,id=spicechannel0,name=vdagent"
+BALLOON="-device virtio-balloon"
+MONITOR="-monitor telnet:127.0.0.1:3010,server,nowait,ipv4"
+NIC="-net nic,model=virtio,macaddr=52:54:DE:AD:BE:EF -net bridge,br=br0"
+
+VIRT_DEVS="$SPICE $BALLOON $MONITOR $NIC"
+
+
+PASS_GPU="-device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1 \
+-device vfio-pci,host=02:00.0,bus=root.1,addr=00.0,multifunction=on,x-vga=on \
+-device vfio-pci,host=02:00.1,bus=root.1,addr=00.1"
+PASS_USB="-device ioh3420,bus=pcie.0,addr=1d.0,port=2,chassis=2,id=root.2 \
+-device vfio-pci,host=0a:00.0,bus=root.2"
+
+PASSTHROUGH="$PASS_GPU $PASS_USB"
+
+
+HDD_BUS="-device virtio-scsi-pci,id=scsi"
+HDD1="-drive file=/dev/mapper/vg0-kvm_win8,id=disk1,format=raw \
+-device scsi-hd,drive=disk1"
+HDD2="-drive file=/dev/mapper/vg0-steam,id=disk2,format=raw \
+-device scsi-hd,drive=disk2"
+HDD3="-drive file=/dev/mapper/vg0-Windows8x64,id=disk3,format=raw \
+-device scsi-hd,drive=disk3"
+CD1="-drive file=/mnt/data/iso/en_windows_8_x64_dvd_915440.iso,id=cd1 \
+-device scsi-cd,drive=cd1"
+IDE_CD="-drive file=/mnt/data/iso/virtio-win-0.1-65.iso,id=cd2 \
+-device ide-cd,bus=ide.1,drive=cd2 "
+
+STORAGE="$HDD_BUS $HDD1 $HDD2 $CD1"
+
+
+# Systemd too stupid to expand variables, so...
+# Source file in shell, then put result of this in args= below.
+FULL_CFG="$BASIC_CFG $VIRT_DEVS $PASSTHROUGH $STORAGE"
+
+
+# These are the values systemd needs
+args="-enable-kvm -M q35 -bios /usr/share/qemu/bios.bin -rtc base=localtime -cpu host -smp 8,sockets=1,cores=4,threads=2 -m 6144 -vga none -spice port=5930,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent -device virtio-balloon -monitor telnet:127.0.0.1:3010,server,nowait,ipv4 -net nic,model=virtio,macaddr=52:54:DE:AD:BE:EF -net bridge,br=br0 -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1 -device vfio-pci,host=02:00.0,bus=root.1,addr=00.0,multifunction=on,x-vga=on -device vfio-pci,host=02:00.1,bus=root.1,addr=00.1 -device ioh3420,bus=pcie.0,addr=1d.0,port=2,chassis=2,id=root.2 -device vfio-pci,host=0a:00.0,bus=root.2 -device virtio-scsi-pci,id=scsi -drive file=/dev/mapper/vg0-kvm_win8,id=disk1,format=raw -device scsi-hd,drive=disk1 -drive file=/dev/mapper/vg0-steam,id=disk2,format=raw -device scsi-hd,drive=disk2 -drive file=/mnt/data/iso/en_windows_8_x64_dvd_915440.iso,id=cd1 -device scsi-cd,drive=cd1"
+haltcmd="echo 'system_powerdown' | nc 127.0.0.1 3010"
