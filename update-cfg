@@ -13,3 +13,6 @@ cd $(dirname ${0})
 cp -rv fs_root/* /
 
 cd ${currentDir}
+
+systemctl daemon-reload
+grub-mkconfig -o /boot/grub/grub.cfg
