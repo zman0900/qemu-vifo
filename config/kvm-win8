@@ -20,7 +20,7 @@ SPICE="-spice port=5930,addr=127.0.0.1,disable-ticketing \
 -device virtio-serial-pci \
 -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
 -chardev spicevmc,id=spicechannel0,name=vdagent"
-BALLOON="-device virtio-balloon"
+BALLOON="-balloon virtio"
 MONITOR="-monitor telnet:127.0.0.1:3010,server,nowait,ipv4"
 NIC="-net nic,model=virtio,macaddr=52:54:DE:AD:BE:EF -net bridge,br=br0"
 
@@ -40,16 +40,16 @@ PASSTHROUGH="$PASS_GPU $PASS_USB $PASS_SATA"
 
 
 HDD_BUS="-device virtio-scsi-pci,id=scsi"
-HDD1="-drive file=/dev/mapper/vg0-kvm_win8,id=disk1,format=raw \
--device scsi-hd,drive=disk1"
-HDD2="-drive file=/dev/mapper/vg0-steam,id=disk2,format=raw \
--device scsi-hd,drive=disk2"
-CD1="-drive file=/mnt/data/iso/en_windows_8_x64_dvd_915440.iso,id=cd1 \
--device scsi-cd,drive=cd1"
-IDE_CD="-drive file=/mnt/data/iso/virtio-win-0.1-65.iso,id=cd2 \
--device ide-cd,bus=ide.1,drive=cd2 "
+#HDD1="-drive file=/dev/mapper/vg0-kvm_win8,id=disk1,if=none,format=raw \
+#-device scsi-hd,bus=scsi.0,drive=disk1"
+HDD2="-drive file=/dev/mapper/vg0-steam,id=disk2,if=none,format=raw \
+-device scsi-hd,bus=scsi.0,drive=disk2"
+CD1="-drive file=/mnt/data/iso/en_windows_8_x64_dvd_915440.iso,if=none,id=cd1 \
+-device scsi-cd,bus=scsi.0,drive=cd1"
+IDE_CD="-drive file=/mnt/data/iso/virtio-win-0.1-100.iso,if=none,id=cd2 \
+-device ide-cd,drive=cd2"
 
-STORAGE="$HDD_BUS"
+STORAGE="$HDD_BUS $HDD2 $CD1 $IDE_CD"
 
 
 # Systemd too stupid to expand variables, so...
