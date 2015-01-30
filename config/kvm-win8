@@ -40,8 +40,8 @@ PASSTHROUGH="$PASS_GPU $PASS_USB $PASS_SATA"
 
 
 HDD_BUS="-device virtio-scsi-pci,id=scsi"
-#HDD1="-drive file=/dev/mapper/vg0-kvm_win8,id=disk1,if=none,format=raw \
-#-device scsi-hd,bus=scsi.0,drive=disk1"
+HDD1="-drive file=/dev/mapper/vg0-kvm_win8,id=disk1,if=none,format=raw \
+-device scsi-hd,bus=scsi.0,drive=disk1"
 HDD2="-drive file=/dev/mapper/vg0-steam,id=disk2,if=none,format=raw \
 -device scsi-hd,bus=scsi.0,drive=disk2"
 CD1="-drive file=/mnt/data/iso/en_windows_8_x64_dvd_915440.iso,if=none,id=cd1 \
