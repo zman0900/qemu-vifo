@@ -53,12 +53,9 @@ STORAGE="$HDD_BUS"
 
 
 # Systemd too stupid to expand variables, so...
-# Source file in shell, then put result of this in args= below.
-FULL_CFG="$BASIC_CFG $VIRT_DEVS $PASSTHROUGH $STORAGE"
-
-
-# These are the values systemd needs
-args="-enable-kvm -M q35 -bios /usr/share/qemu/bios.bin -rtc base=localtime -cpu host -smp 8,sockets=1,cores=4,threads=2 -m 6144 -vga none -spice port=5930,addr=127.0.0.1,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent -device virtio-balloon -monitor telnet:127.0.0.1:3010,server,nowait,ipv4 -net nic,model=virtio,macaddr=52:54:DE:AD:BE:EF -net bridge,br=br0 -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1 -device vfio-pci,host=02:00.0,bus=root.1,addr=00.0,multifunction=on,x-vga=on -device vfio-pci,host=02:00.1,bus=root.1,addr=00.1 -device ioh3420,bus=pcie.0,addr=1d.0,port=2,chassis=2,id=root.2 -device vfio-pci,host=0a:00.0,bus=root.2 -device vfio-pci,host=00:1d.0,bus=root.2 -device ioh3420,bus=pcie.0,addr=1e.0,port=3,chassis=3,id=root.3 -device vfio-pci,host=04:00.0,bus=root.3 -device virtio-scsi-pci,id=scsi"
-#haltcmd="echo 'system_powerdown' | nc 127.0.0.1 3010"
-haltcmd="net rpc -S kvm-win8 shutdown -t 0 -f -U shutdown%${WIN_SHUTDOWN_PASS}"
+# Source file in shell, then put result of this in args=""
+ARGS="$BASIC_CFG $VIRT_DEVS $PASSTHROUGH $STORAGE"
+# And the result of this in haltcmd=""
+#HALTCMD="echo 'system_powerdown' | nc 127.0.0.1 3010"
+HALTCMD="net rpc -S kvm-win8 shutdown -t 0 -f -U shutdown%{{WIN_SHUTDOWN_PASS}}"
 

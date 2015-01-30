@@ -10,13 +10,23 @@ fi
 currentDir=$(pwd)
 cd $(dirname ${0})
 
+# Working copy of files
+cp -a fs_root staging
+
+# Generate qemu config files
+mkdir -p staging/etc/conf.d/qemu.d 
+for file in config/*; do
+    source $file
+    echo "args=\"$ARGS\"" > staging/etc/conf.d/qemu.d/$(basename $file)
+    echo "haltcmd=\"$HALTCMD\"" >> staging/etc/conf.d/qemu.d/$(basename $file)
+done
+
 # Apply passwords to config files
 # password file has lines like "ABC=123"
 # this will replace all occurances of ${ABC} with 123
-cp -a fs_root staging
 for file in $(find staging/ -type f -print); do
     while IFS="=" read placeholder pass; do
-       sed -i "s/\${$placeholder}/$pass/g" $file 
+       sed -i "s/{{$placeholder}}/$pass/g" $file 
     done < passwords
 done
 
