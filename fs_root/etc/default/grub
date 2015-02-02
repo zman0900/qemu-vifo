@@ -3,10 +3,8 @@ GRUB_TIMEOUT=5
 GRUB_DISTRIBUTOR="Arch"
 
 #      gpu pcie root port = 8086:0155 - 00:01.1
-#                  hd7850 = 1002:6798 - 02:00.0
-#            hd7850-audio = 1002:aaa0 - 02:00.1
-#  pcie network (removed) = 10ec:8168 - 03:00.0
-#     pci audio (removed) = 13f6:8788 - 0c:00.0
+#                 r9 280x = 1002:6798 - 02:00.0
+#           r9 280x audio = 1002:aaa0 - 02:00.1
 #            onboard usb2 = 8086:1e26 - 00:1d.0
 # onboard usb3 (not used) = 1b6f:7023 - 06:00.0
 #               pcie usb3 = 1033:0194 - 0a:00.0
