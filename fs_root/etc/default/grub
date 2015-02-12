@@ -10,7 +10,7 @@ GRUB_DISTRIBUTOR="Arch"
 #               pcie usb3 = 1033:0194 - 0a:00.0
 #                    sata = 1b21:0612 - 04:00.0
 
-GRUB_CMDLINE_LINUX_DEFAULT="intel_iommu=on i915.enable_hd_vgaarb=1 pci-stub.ids=1002:6798,1002:aaa0,1033:0194,1b21:0612 pcie_acs_override=id:1002:6798,id:1002:aaa0,id:8086:0155"
+GRUB_CMDLINE_LINUX_DEFAULT="intel_iommu=on i915.enable_hd_vgaarb=1 pci-stub.ids=1002:6798,1002:aaa0,1033:0194,1b21:0612 pcie_acs_override=id:1002:6798,id:1002:aaa0,id:8086:0155 quiet splash"
 
 GRUB_CMDLINE_LINUX=""
 
@@ -22,7 +22,7 @@ GRUB_PRELOAD_MODULES="part_gpt part_msdos lvm"
 #GRUB_HIDDEN_TIMEOUT_QUIET=true
 
 # Uncomment to use basic console
-GRUB_TERMINAL_INPUT=console
+#GRUB_TERMINAL_INPUT=console
 
 # Uncomment to disable graphical terminal
 #GRUB_TERMINAL_OUTPUT=console
@@ -50,6 +50,7 @@ GRUB_DISABLE_RECOVERY=true
 # Uncomment one of them for the gfx desired, a image background or a gfxtheme
 #GRUB_BACKGROUND="/path/to/wallpaper"
 #GRUB_THEME="/path/to/gfxtheme"
+GRUB_THEME=/boot/grub/themes/starfield/theme.txt
 
 # Uncomment to get a beep at GRUB start
 #GRUB_INIT_TUNE="480 440 1"
