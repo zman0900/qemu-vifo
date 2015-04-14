@@ -8,7 +8,7 @@
 
 MACHINE="-enable-kvm -M q35 -bios /usr/share/qemu/bios.bin -rtc base=localtime"
 CPU="-cpu host -smp 8,sockets=1,cores=4,threads=2"
-MEM="-m 6144"
+MEM="-m 8192"
 GRAPHICS="-vga none"
 
 BASIC_CFG="$MACHINE $CPU $MEM $GRAPHICS"
