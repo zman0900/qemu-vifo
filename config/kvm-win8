@@ -47,7 +47,7 @@ CD1="-drive file=/mnt/data/iso/en_windows_8_x64_dvd_915440.iso,if=none,id=cd1 \
 IDE_CD="-drive file=/mnt/data/iso/virtio-win-0.1-100.iso,if=none,id=cd2 \
 -device ide-cd,drive=cd2"
 
-STORAGE="$HDD_BUS $HDD2 $CD1 $IDE_CD"
+STORAGE="$HDD_BUS $CD1 $IDE_CD"
 
 
 # Systemd too stupid to expand variables, so...
