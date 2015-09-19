@@ -7,7 +7,7 @@
 
 
 MACHINE="-enable-kvm -M q35 -bios /usr/share/qemu/bios.bin -rtc base=localtime"
-CPU="-cpu host -smp 8,sockets=1,cores=4,threads=2"
+CPU="-cpu host -smp 4,sockets=1,cores=4,threads=1"
 MEM="-m 8192"
 GRAPHICS="-vga none"
 
@@ -42,9 +42,9 @@ HDD1="-drive file=/dev/mapper/vg0-kvm_win8,id=disk1,if=none,format=raw \
 -device scsi-hd,bus=scsi.0,drive=disk1"
 HDD2="-drive file=/dev/mapper/vg0-steam,id=disk2,if=none,format=raw \
 -device scsi-hd,bus=scsi.0,drive=disk2"
-CD1="-drive file=/mnt/data/iso/en_windows_8_x64_dvd_915440.iso,if=none,id=cd1 \
+CD1="-drive file=/mnt/data/iso/en_windows_8_x64_dvd_915440.iso,if=none,format=raw,id=cd1 \
 -device scsi-cd,bus=scsi.0,drive=cd1"
-IDE_CD="-drive file=/mnt/data/iso/virtio-win-0.1-100.iso,if=none,id=cd2 \
+IDE_CD="-drive file=/mnt/data/iso/virtio-win-0.1-100.iso,if=none,format=raw,id=cd2 \
 -device ide-cd,drive=cd2"
 
 STORAGE="$HDD_BUS $CD1 $IDE_CD"
